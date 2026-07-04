@@ -1,10 +1,8 @@
 import XCTest
 @testable import anilist
 
-// swiftlint:disable explicit_acl explicit_top_level_acl
-final class QueriesTests: XCTestCase {
-    
-    func testMediaDecoding() throws {
+internal final class QueriesTests: XCTestCase {
+    internal func testMediaDecoding() throws {
         let jsonResponse = """
         {
             "id": 1,
@@ -33,14 +31,14 @@ final class QueriesTests: XCTestCase {
         XCTAssertEqual(media.title?.romaji, "Cowboy Bebop")
         XCTAssertEqual(media.title?.english, "Cowboy Bebop")
         XCTAssertEqual(media.type, .anime)
-        XCTAssertEqual(media.format, .tv)
+        XCTAssertEqual(media.format, .tvSeries)
         XCTAssertEqual(media.status, .finished)
         XCTAssertEqual(media.episodes, 26)
         XCTAssertEqual(media.startDate?.year, 1998)
         XCTAssertEqual(media.genres?.count, 2)
     }
     
-    func testSearchQueryVariablesEncoding() throws {
+    internal func testSearchQueryVariablesEncoding() throws {
         let query = AniListQueries.SearchQuery(
             page: 2,
             perPage: 10,
@@ -63,7 +61,7 @@ final class QueriesTests: XCTestCase {
         XCTAssertTrue(jsonString.contains("\"sort\":[\"POPULARITY_DESC\"]"))
     }
     
-    func testActivityDecoding() throws {
+    internal func testActivityDecoding() throws {
         let jsonResponse = """
         {
             "__typename": "TextActivity",

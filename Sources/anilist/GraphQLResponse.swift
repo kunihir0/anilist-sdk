@@ -12,7 +12,7 @@ public struct GraphQLError: Decodable, Equatable, Sendable {
 }
 
 /// Internal wrapper for decoding the standard GraphQL JSON payload.
-struct GraphQLResponse<T: Decodable>: Decodable {
-    let data: T?
-    let errors: [GraphQLError]?
+internal struct GraphQLResponse<T: Decodable>: Decodable {
+    internal let data: T?
+    internal let errors: [GraphQLError]?
 }

@@ -17,5 +17,6 @@ public protocol GraphQLRequest {
 
 /// A default extension to provide nil variables for requests that don't need them.
 public extension GraphQLRequest {
-    var variables: String? { return nil }
+    /// Default variables are nil.
+    var variables: String? { nil }
 }

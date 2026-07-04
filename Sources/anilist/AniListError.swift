@@ -19,19 +19,19 @@ public enum AniListError: Error, Equatable {
     
     public static func == (lhs: AniListError, rhs: AniListError) -> Bool {
         switch (lhs, rhs) {
-        case (.networkError(let lhsValue), .networkError(let rhsValue)):
+        case let (.networkError(lhsValue), .networkError(rhsValue)):
             return lhsValue.code == rhsValue.code
             
-        case (.httpError(let lhsValue), .httpError(let rhsValue)):
+        case let (.httpError(lhsValue), .httpError(rhsValue)):
             return lhsValue == rhsValue
             
-        case (.rateLimitExceeded(let lhsValue), .rateLimitExceeded(let rhsValue)):
+        case let (.rateLimitExceeded(lhsValue), .rateLimitExceeded(rhsValue)):
             return lhsValue == rhsValue
             
-        case (.graphqlErrors(let lhsValue), .graphqlErrors(let rhsValue)):
+        case let (.graphqlErrors(lhsValue), .graphqlErrors(rhsValue)):
             return lhsValue == rhsValue
             
-        case (.decodingError(let lhsValue), .decodingError(let rhsValue)):
+        case let (.decodingError(lhsValue), .decodingError(rhsValue)):
             return lhsValue == rhsValue
             
         default:

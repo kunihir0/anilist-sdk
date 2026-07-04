@@ -67,7 +67,7 @@ public struct SaveMediaListEntryMutation: GraphQLRequest {
 public struct SaveMediaListEntryResponse: Decodable {
     public let saveMediaListEntry: MediaListEntry
     
-    enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
         case saveMediaListEntry = "SaveMediaListEntry"
     }
 }

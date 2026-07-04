@@ -6,7 +6,7 @@ public extension AniListQueries {
         public struct Response: Decodable, Equatable, Sendable {
             public let media: Media?
             
-            enum CodingKeys: String, CodingKey {
+            public enum CodingKeys: String, CodingKey {
                 case media = "Media"
             }
         }

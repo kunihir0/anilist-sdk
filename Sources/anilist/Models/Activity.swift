@@ -15,15 +15,19 @@ public struct TextActivity: Codable, Equatable, Sendable {
     public let replyCount: Int
     public let text: String?
     public let siteUrl: String?
-    public let isLocked: Bool?
-    public let isSubscribed: Bool?
+    public let isLocked: Bool
+    public let isSubscribed: Bool
     public let likeCount: Int
-    public let isLiked: Bool?
-    public let isPinned: Bool?
+    public let isLiked: Bool
+    public let isPinned: Bool
     public let createdAt: Int
     public let user: User?
     
-    public init(id: Int, userId: Int? = nil, type: ActivityType? = nil, replyCount: Int = 0, text: String? = nil, siteUrl: String? = nil, isLocked: Bool? = nil, isSubscribed: Bool? = nil, likeCount: Int = 0, isLiked: Bool? = nil, isPinned: Bool? = nil, createdAt: Int, user: User? = nil) {
+    public enum CodingKeys: String, CodingKey {
+        case id, userId, type, replyCount, text, siteUrl, isLocked, isSubscribed, likeCount, isLiked, isPinned, createdAt, user
+    }
+    
+    public init(id: Int, userId: Int? = nil, type: ActivityType? = nil, replyCount: Int = 0, text: String? = nil, siteUrl: String? = nil, isLocked: Bool = false, isSubscribed: Bool = false, likeCount: Int = 0, isLiked: Bool = false, isPinned: Bool = false, createdAt: Int, user: User? = nil) {
         self.id = id
         self.userId = userId
         self.type = type
@@ -38,6 +42,23 @@ public struct TextActivity: Codable, Equatable, Sendable {
         self.createdAt = createdAt
         self.user = user
     }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(Int.self, forKey: .id)
+        self.userId = try container.decodeIfPresent(Int.self, forKey: .userId)
+        self.type = try container.decodeIfPresent(ActivityType.self, forKey: .type)
+        self.replyCount = try container.decode(Int.self, forKey: .replyCount)
+        self.text = try container.decodeIfPresent(String.self, forKey: .text)
+        self.siteUrl = try container.decodeIfPresent(String.self, forKey: .siteUrl)
+        self.isLocked = try container.decodeIfPresent(Bool.self, forKey: .isLocked) ?? false
+        self.isSubscribed = try container.decodeIfPresent(Bool.self, forKey: .isSubscribed) ?? false
+        self.likeCount = try container.decode(Int.self, forKey: .likeCount)
+        self.isLiked = try container.decodeIfPresent(Bool.self, forKey: .isLiked) ?? false
+        self.isPinned = try container.decodeIfPresent(Bool.self, forKey: .isPinned) ?? false
+        self.createdAt = try container.decode(Int.self, forKey: .createdAt)
+        self.user = try container.decodeIfPresent(User.self, forKey: .user)
+    }
 }
 
 public struct ListActivity: Codable, Equatable, Sendable {
@@ -47,17 +68,21 @@ public struct ListActivity: Codable, Equatable, Sendable {
     public let replyCount: Int
     public let status: String?
     public let progress: String?
-    public let isLocked: Bool?
-    public let isSubscribed: Bool?
+    public let isLocked: Bool
+    public let isSubscribed: Bool
     public let likeCount: Int
-    public let isLiked: Bool?
-    public let isPinned: Bool?
+    public let isLiked: Bool
+    public let isPinned: Bool
     public let siteUrl: String?
     public let createdAt: Int
     public let user: User?
     public let media: Media?
     
-    public init(id: Int, userId: Int? = nil, type: ActivityType? = nil, replyCount: Int = 0, status: String? = nil, progress: String? = nil, isLocked: Bool? = nil, isSubscribed: Bool? = nil, likeCount: Int = 0, isLiked: Bool? = nil, isPinned: Bool? = nil, siteUrl: String? = nil, createdAt: Int, user: User? = nil, media: Media? = nil) {
+    public enum CodingKeys: String, CodingKey {
+        case id, userId, type, replyCount, status, progress, isLocked, isSubscribed, likeCount, isLiked, isPinned, siteUrl, createdAt, user, media
+    }
+    
+    public init(id: Int, userId: Int? = nil, type: ActivityType? = nil, replyCount: Int = 0, status: String? = nil, progress: String? = nil, isLocked: Bool = false, isSubscribed: Bool = false, likeCount: Int = 0, isLiked: Bool = false, isPinned: Bool = false, siteUrl: String? = nil, createdAt: Int, user: User? = nil, media: Media? = nil) {
         self.id = id
         self.userId = userId
         self.type = type
@@ -74,6 +99,25 @@ public struct ListActivity: Codable, Equatable, Sendable {
         self.user = user
         self.media = media
     }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(Int.self, forKey: .id)
+        self.userId = try container.decodeIfPresent(Int.self, forKey: .userId)
+        self.type = try container.decodeIfPresent(ActivityType.self, forKey: .type)
+        self.replyCount = try container.decode(Int.self, forKey: .replyCount)
+        self.status = try container.decodeIfPresent(String.self, forKey: .status)
+        self.progress = try container.decodeIfPresent(String.self, forKey: .progress)
+        self.isLocked = try container.decodeIfPresent(Bool.self, forKey: .isLocked) ?? false
+        self.isSubscribed = try container.decodeIfPresent(Bool.self, forKey: .isSubscribed) ?? false
+        self.likeCount = try container.decode(Int.self, forKey: .likeCount)
+        self.isLiked = try container.decodeIfPresent(Bool.self, forKey: .isLiked) ?? false
+        self.isPinned = try container.decodeIfPresent(Bool.self, forKey: .isPinned) ?? false
+        self.siteUrl = try container.decodeIfPresent(String.self, forKey: .siteUrl)
+        self.createdAt = try container.decode(Int.self, forKey: .createdAt)
+        self.user = try container.decodeIfPresent(User.self, forKey: .user)
+        self.media = try container.decodeIfPresent(Media.self, forKey: .media)
+    }
 }
 
 public struct MessageActivity: Codable, Equatable, Sendable {
@@ -83,17 +127,21 @@ public struct MessageActivity: Codable, Equatable, Sendable {
     public let type: ActivityType?
     public let replyCount: Int
     public let message: String?
-    public let isLocked: Bool?
-    public let isSubscribed: Bool?
+    public let isLocked: Bool
+    public let isSubscribed: Bool
     public let likeCount: Int
-    public let isLiked: Bool?
-    public let isPrivate: Bool?
+    public let isLiked: Bool
+    public let isPrivate: Bool
     public let siteUrl: String?
     public let createdAt: Int
     public let recipient: User?
     public let messenger: User?
     
-    public init(id: Int, recipientId: Int? = nil, messengerId: Int? = nil, type: ActivityType? = nil, replyCount: Int = 0, message: String? = nil, isLocked: Bool? = nil, isSubscribed: Bool? = nil, likeCount: Int = 0, isLiked: Bool? = nil, isPrivate: Bool? = nil, siteUrl: String? = nil, createdAt: Int, recipient: User? = nil, messenger: User? = nil) {
+    public enum CodingKeys: String, CodingKey {
+        case id, recipientId, messengerId, type, replyCount, message, isLocked, isSubscribed, likeCount, isLiked, isPrivate, siteUrl, createdAt, recipient, messenger
+    }
+    
+    public init(id: Int, recipientId: Int? = nil, messengerId: Int? = nil, type: ActivityType? = nil, replyCount: Int = 0, message: String? = nil, isLocked: Bool = false, isSubscribed: Bool = false, likeCount: Int = 0, isLiked: Bool = false, isPrivate: Bool = false, siteUrl: String? = nil, createdAt: Int, recipient: User? = nil, messenger: User? = nil) {
         self.id = id
         self.recipientId = recipientId
         self.messengerId = messengerId
@@ -110,6 +158,25 @@ public struct MessageActivity: Codable, Equatable, Sendable {
         self.recipient = recipient
         self.messenger = messenger
     }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(Int.self, forKey: .id)
+        self.recipientId = try container.decodeIfPresent(Int.self, forKey: .recipientId)
+        self.messengerId = try container.decodeIfPresent(Int.self, forKey: .messengerId)
+        self.type = try container.decodeIfPresent(ActivityType.self, forKey: .type)
+        self.replyCount = try container.decode(Int.self, forKey: .replyCount)
+        self.message = try container.decodeIfPresent(String.self, forKey: .message)
+        self.isLocked = try container.decodeIfPresent(Bool.self, forKey: .isLocked) ?? false
+        self.isSubscribed = try container.decodeIfPresent(Bool.self, forKey: .isSubscribed) ?? false
+        self.likeCount = try container.decode(Int.self, forKey: .likeCount)
+        self.isLiked = try container.decodeIfPresent(Bool.self, forKey: .isLiked) ?? false
+        self.isPrivate = try container.decodeIfPresent(Bool.self, forKey: .isPrivate) ?? false
+        self.siteUrl = try container.decodeIfPresent(String.self, forKey: .siteUrl)
+        self.createdAt = try container.decode(Int.self, forKey: .createdAt)
+        self.recipient = try container.decodeIfPresent(User.self, forKey: .recipient)
+        self.messenger = try container.decodeIfPresent(User.self, forKey: .messenger)
+    }
 }
 
 public enum Activity: Codable, Equatable, Sendable {
@@ -117,7 +184,7 @@ public enum Activity: Codable, Equatable, Sendable {
     case list(ListActivity)
     case message(MessageActivity)
     
-    enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
         case type = "__typename"
     }
     
@@ -129,12 +196,15 @@ public enum Activity: Codable, Equatable, Sendable {
         case "TextActivity":
             let activity = try TextActivity(from: decoder)
             self = .text(activity)
+
         case "ListActivity":
             let activity = try ListActivity(from: decoder)
             self = .list(activity)
+
         case "MessageActivity":
             let activity = try MessageActivity(from: decoder)
             self = .message(activity)
+
         default:
             throw DecodingError.dataCorruptedError(
                 forKey: .type,
@@ -150,9 +220,11 @@ public enum Activity: Codable, Equatable, Sendable {
         case .text(let activity):
             try container.encode("TextActivity", forKey: .type)
             try activity.encode(to: encoder)
+
         case .list(let activity):
             try container.encode("ListActivity", forKey: .type)
             try activity.encode(to: encoder)
+
         case .message(let activity):
             try container.encode("MessageActivity", forKey: .type)
             try activity.encode(to: encoder)

@@ -46,6 +46,10 @@ public struct AniListClient {
             throw AniListError.networkError(URLError(.unknown))
         }
         
+        return try handleResponse(response, data: data)
+    }
+
+    private func handleResponse<T: Decodable>(_ response: URLResponse, data: Data) throws -> T {
         guard let httpResponse = response as? HTTPURLResponse else {
             throw AniListError.httpError(statusCode: 0)
         }
@@ -58,9 +62,9 @@ public struct AniListClient {
             throw AniListError.rateLimitExceeded(retryAfter: retryAfter)
         }
         
-        let graphQLResponse: GraphQLResponse<R.Response>
+        let graphQLResponse: GraphQLResponse<T>
         do {
-            graphQLResponse = try JSONDecoder().decode(GraphQLResponse<R.Response>.self, from: data)
+            graphQLResponse = try JSONDecoder().decode(GraphQLResponse<T>.self, from: data)
         } catch {
             throw AniListError.decodingError("Failed to decode response: \(error.localizedDescription)")
         }
@@ -69,11 +73,9 @@ public struct AniListClient {
             if graphQLResponse.data == nil {
                 throw AniListError.graphqlErrors(errors)
             }
-            // If data is present but errors exist, we return the data (ignoring partial errors)
         }
         
         guard let responseData = graphQLResponse.data else {
-            // This happens if both data and errors are nil, or if decoding succeeded but data is null
             throw AniListError.decodingError("Response contained neither data nor errors.")
         }
         

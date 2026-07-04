@@ -1,5 +1,6 @@
 import Foundation
 
+/// Namespace for AniList GraphQL queries.
 public enum AniListQueries {}
 
 public extension AniListQueries {
@@ -8,7 +9,7 @@ public extension AniListQueries {
         public struct Response: Decodable, Equatable, Sendable {
             public let viewer: User?
             
-            enum CodingKeys: String, CodingKey {
+            public enum CodingKeys: String, CodingKey {
                 case viewer = "Viewer"
             }
         }

@@ -6,7 +6,7 @@ public enum MediaType: String, Codable, Equatable, Sendable {
 }
 
 public enum MediaFormat: String, Codable, Equatable, Sendable {
-    case tv = "TV"
+    case tvSeries = "TV"
     case tvShort = "TV_SHORT"
     case movie = "MOVIE"
     case special = "SPECIAL"

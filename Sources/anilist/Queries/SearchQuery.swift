@@ -6,7 +6,7 @@ public extension AniListQueries {
         public struct Response: Decodable, Equatable, Sendable {
             public let page: PageData?
             
-            enum CodingKeys: String, CodingKey {
+            public enum CodingKeys: String, CodingKey {
                 case page = "Page"
             }
             
@@ -22,9 +22,9 @@ public extension AniListQueries {
             public let search: String?
             public let type: MediaType?
             public let sort: [MediaSort]?
-            public let isAdult: Bool?
+            public let isAdult: Bool
             
-            enum CodingKeys: String, CodingKey {
+            public enum CodingKeys: String, CodingKey {
                 case page
                 case perPage
                 case search
@@ -33,7 +33,7 @@ public extension AniListQueries {
                 case isAdult
             }
             
-            public init(page: Int? = 1, perPage: Int? = 20, search: String? = nil, type: MediaType? = nil, sort: [MediaSort]? = nil, isAdult: Bool? = false) {
+            public init(page: Int? = 1, perPage: Int? = 20, search: String? = nil, type: MediaType? = nil, sort: [MediaSort]? = nil, isAdult: Bool = false) {
                 self.page = page
                 self.perPage = perPage
                 self.search = search
@@ -88,7 +88,7 @@ public extension AniListQueries {
         
         public let variables: Variables?
         
-        public init(page: Int? = 1, perPage: Int? = 20, search: String? = nil, type: MediaType? = nil, sort: [MediaSort]? = nil, isAdult: Bool? = false) {
+        public init(page: Int? = 1, perPage: Int? = 20, search: String? = nil, type: MediaType? = nil, sort: [MediaSort]? = nil, isAdult: Bool = false) {
             self.variables = Variables(page: page, perPage: perPage, search: search, type: type, sort: sort, isAdult: isAdult)
         }
     }

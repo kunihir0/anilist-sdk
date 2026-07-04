@@ -1,20 +1,18 @@
 import XCTest
 @testable import anilist
 
-// swiftlint:disable explicit_acl explicit_top_level_acl
-// A mock URLProtocol to intercept URLSession requests without hitting the network
-final class MockURLProtocol: URLProtocol, @unchecked Sendable {
-    nonisolated(unsafe) static var requestHandler: ((URLRequest) throws -> (HTTPURLResponse, Data))?
+internal final class MockURLProtocol: URLProtocol, @unchecked Sendable {
+    nonisolated(unsafe) internal static var requestHandler: ((URLRequest) throws -> (HTTPURLResponse, Data))?
     
-    override class func canInit(with request: URLRequest) -> Bool {
-        return true
+    override internal static func canInit(with request: URLRequest) -> Bool {
+        true
     }
     
-    override class func canonicalRequest(for request: URLRequest) -> URLRequest {
-        return request
+    override internal static func canonicalRequest(for request: URLRequest) -> URLRequest {
+        request
     }
     
-    override func startLoading() {
+    override internal func startLoading() {
         guard let handler = MockURLProtocol.requestHandler else {
             fatalError("Handler is unavailable.")
         }
@@ -29,22 +27,22 @@ final class MockURLProtocol: URLProtocol, @unchecked Sendable {
         }
     }
     
-    override func stopLoading() {}
+    override internal func stopLoading() {}
 }
 
-final class AniListClientTests: XCTestCase {
-    var session: URLSession!
-    var client: AniListClient!
+internal final class AniListClientTests: XCTestCase {
+    internal var session: URLSession!
+    internal var client: AniListClient!
     
-    override func setUp() {
+    override internal func setUp() {
         super.setUp()
         let configuration = URLSessionConfiguration.ephemeral
         configuration.protocolClasses = [MockURLProtocol.self]
         session = URLSession(configuration: configuration)
-        client = AniListClient(session: session, tokenProvider: { "mock_token" })
+        client = AniListClient(session: session) { "mock_token" }
     }
     
-    func testExecute_Success() async throws {
+    internal func testExecute_Success() async throws {
         let jsonResponse = """
         {
             "data": {
@@ -74,7 +72,7 @@ final class AniListClientTests: XCTestCase {
         XCTAssertEqual(result.viewer?.name, "TestUser")
     }
     
-    func testExecute_RateLimit() async throws {
+    internal func testExecute_RateLimit() async throws {
         MockURLProtocol.requestHandler = { request in
             let url = try XCTUnwrap(request.url)
             let response = try XCTUnwrap(HTTPURLResponse(url: url, statusCode: 429, httpVersion: nil, headerFields: ["Retry-After": "60"]))
@@ -93,7 +91,7 @@ final class AniListClientTests: XCTestCase {
         }
     }
     
-    func testExecute_GraphQLError() async throws {
+    internal func testExecute_GraphQLError() async throws {
         let jsonResponse = """
         {
             "errors": [
@@ -126,7 +124,7 @@ final class AniListClientTests: XCTestCase {
         }
     }
     
-    func testExecute_PartialError() async throws {
+    internal func testExecute_PartialError() async throws {
         let jsonResponse = """
         {
             "data": {
