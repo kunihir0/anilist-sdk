@@ -4,7 +4,12 @@ import Foundation
 public struct AniListClient {
     private let session: URLSession
     private let tokenProvider: (() async throws -> String?)?
-    private let endpoint = URL(string: "https://graphql.anilist.co")!
+    private let endpoint: URL = {
+        guard let url = URL(string: "https://graphql.anilist.co") else {
+            fatalError("Invalid endpoint URL")
+        }
+        return url
+    }()
 
     /// Initializes a new AniList API client.
     /// - Parameters:
