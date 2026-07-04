@@ -38,7 +38,7 @@ jobs:
             --hosting-base-path anilist-sdk \
             --output-path ./docs-out
             
-          echo "<script>window.location.href += \"documentation/anilist\"</script>" > ./docs-out/index.html
+          echo "<!DOCTYPE html><html><head><meta http-equiv=\"refresh\" content=\"0; url=/anilist-sdk/documentation/anilist\"></head><body></body></html>" > ./docs-out/index.html
       - name: Setup Pages
         uses: actions/configure-pages@v4
         
