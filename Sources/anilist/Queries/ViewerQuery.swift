@@ -24,6 +24,16 @@ public extension AniListQueries {
                   large
                   medium
                 }
+                statistics {
+                  anime {
+                    count
+                    episodesWatched
+                  }
+                  manga {
+                    count
+                    chaptersRead
+                  }
+                }
               }
             }
             """
